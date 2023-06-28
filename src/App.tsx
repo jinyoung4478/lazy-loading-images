@@ -2,6 +2,12 @@ import styled, { keyframes } from 'styled-components';
 import './App.css';
 import { useState } from 'react';
 
+const baseUrl = 'https://jinyoung4478.github.io/lazy-loading-images';
+
+function genSmallImgPath(img: string) {
+  return `${baseUrl}/imgs/${img}-small.jpg`;
+}
+
 const pulse = keyframes`
 0% {
   background-color: rgba(255, 255, 255, 0);
@@ -15,7 +21,7 @@ const pulse = keyframes`
 `;
 
 const BlurLoad = styled.div<{ imgPath: string }>`
-  background-image: url(${({ imgPath }) => `/imgs/${imgPath}-small.jpg`});
+  background-image: url(${({ imgPath }) => `${genSmallImgPath(imgPath)}`});
   background-size: cover;
   background-position: center;
   position: relative;
@@ -91,7 +97,7 @@ function App() {
           >
             <Img
               id={item}
-              src={`/imgs/${item}.jpg`}
+              src={`${baseUrl}/imgs/${item}.jpg`}
               loading="lazy"
               onLoad={() => handleImageLoad(index)}
             />
