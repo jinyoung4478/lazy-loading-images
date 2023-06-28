@@ -1,47 +1,105 @@
+import styled, { keyframes } from 'styled-components';
 import './App.css';
-import img1 from '/imgs/img1.png';
-import img2 from '/imgs/img2.jpg';
-import img3 from '/imgs/img3.jpg';
-import img4 from '/imgs/img4.jpg';
-import img5 from '/imgs/img5.jpg';
-import img6 from '/imgs/img6.jpg';
-import img7 from '/imgs/img7.jpg';
-import img8 from '/imgs/img8.jpg';
-import img9 from '/imgs/img9.jpg';
-import img10 from '/imgs/img10.jpg';
-import img11 from '/imgs/img11.jpg';
-import img12 from '/imgs/img12.jpg';
-import img13 from '/imgs/img13.jpg';
-import img14 from '/imgs/img14.jpg';
-import img15 from '/imgs/img15.jpg';
-import img16 from '/imgs/img16.jpg';
+import { useState } from 'react';
+
+const pulse = keyframes`
+0% {
+  background-color: rgba(255, 255, 255, 0);
+}
+50% {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+100% {
+  background-color: rgba(255, 255, 255, 0);
+}
+`;
+
+const BlurLoad = styled.div<{ imgPath: string }>`
+  background-image: url(${({ imgPath }) => `/imgs/${imgPath}-small.jpg`});
+  background-size: cover;
+  background-position: center;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    animation: ${pulse} 2s infinite;
+  }
+
+  &.loaded {
+    > img {
+      opacity: 1;
+    }
+
+    &::before {
+      content: none;
+    }
+  }
+`;
+
+const Img = styled.img`
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  display: block;
+  object-position: center;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 200ms ease-in-out;
+`;
+
+const imgList = [
+  'img1',
+  'img2',
+  'img3',
+  'img4',
+  'img5',
+  'img6',
+  'img7',
+  'img8',
+  'img9',
+  'img10',
+  'img11',
+  'img12',
+  'img13',
+  'img14',
+  'img15',
+  'img16',
+];
 
 function App() {
+  const [loaded, setLoaded] = useState<boolean[]>(
+    Array(imgList.length).fill(false),
+  );
+
+  const handleImageLoad = (index: number) => {
+    setLoaded((prevLoaded) => {
+      const newLoaded = [...prevLoaded];
+      newLoaded[index] = true;
+      return newLoaded;
+    });
+  };
+
   return (
     <body>
       <div className="grid">
-        <img src={img1} />
-        <img src={img2} />
-        <img src={img3} />
-        <img src={img4} />
-        <img src={img5} />
-        <img src={img6} />
-        <img src={img7} />
-        <img src={img8} />
-        <img src={img9} />
-        <img src={img10} />
-        <img src={img11} />
-        <img src={img12} />
-        <img src={img13} />
-        <img src={img14} />
-        <img src={img15} />
-        <img src={img16} />
+        {imgList.map((item, index) => (
+          <BlurLoad
+            key={index}
+            imgPath={item}
+            className={`blur-load ${loaded[index] ? 'loaded' : ''}`}
+          >
+            <Img
+              id={item}
+              src={`/imgs/${item}.jpg`}
+              loading="lazy"
+              onLoad={() => handleImageLoad(index)}
+            />
+          </BlurLoad>
+        ))}
       </div>
     </body>
   );
 }
 
 export default App;
-
-//
-//           <img src={reactLogo} className="logo react" alt="React logo" />
