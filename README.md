@@ -22,10 +22,11 @@ The project structure is organized as follows:
 
 ```bash
 ├── src
-│ ├── App.jsx
-│ └── main.jsx
+│    ├── components
+│    ├── App.jsx
+│    └── main.jsx
 └── public
-  └── imgs
+     └── imgs
 ```
 
 ## Tech Stack
