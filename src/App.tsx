@@ -1,57 +1,9 @@
-import styled, { keyframes } from 'styled-components';
-import './App.css';
-import { useState } from 'react';
+import styled from 'styled-components';
+import LazyImage from './components/LazyImage';
 
-const baseUrl = 'https://jinyoung4478.github.io/lazy-loading-images';
-
-function genSmallImgPath(img: string) {
-  return `${baseUrl}/imgs/${img}-small.jpg`;
-}
-
-const pulse = keyframes`
-0% {
-  background-color: rgba(255, 255, 255, 0);
-}
-50% {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-100% {
-  background-color: rgba(255, 255, 255, 0);
-}
-`;
-
-const BlurLoad = styled.div<{ imgPath: string }>`
-  background-image: url(${({ imgPath }) => `${genSmallImgPath(imgPath)}`});
-  background-size: cover;
-  background-position: center;
-  position: relative;
-
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    animation: ${pulse} 2s infinite;
-  }
-
-  &.loaded {
-    > img {
-      opacity: 1;
-    }
-
-    &::before {
-      content: none;
-    }
-  }
-`;
-
-const Img = styled.img`
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  display: block;
-  object-position: center;
-  object-fit: cover;
-  opacity: 0;
-  transition: opacity 200ms ease-in-out;
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 `;
 
 const imgList = [
@@ -73,23 +25,22 @@ const imgList = [
   'img16',
 ];
 
+const imgData = [
+  {
+    imgFull: '/imgs/img1.jpg',
+    imgSmall: '/imgs/img1-small.jpg',
+  },
+  {
+    imgFull: '/imgs/img2.jpg',
+    imgSmall: '/imgs/img2-small.jpg',
+  },
+];
+
 function App() {
-  const [loaded, setLoaded] = useState<boolean[]>(
-    Array(imgList.length).fill(false),
-  );
-
-  const handleImageLoad = (index: number) => {
-    setLoaded((prevLoaded) => {
-      const newLoaded = [...prevLoaded];
-      newLoaded[index] = true;
-      return newLoaded;
-    });
-  };
-
   return (
     <body>
-      <div className="grid">
-        {imgList.map((item, index) => (
+      <Grid>
+        {/* {imgList.map((item, index) => (
           <BlurLoad
             key={index}
             imgPath={item}
@@ -102,8 +53,11 @@ function App() {
               onLoad={() => handleImageLoad(index)}
             />
           </BlurLoad>
+        ))} */}
+        {imgData.map(({imgFull, imgSmall}, index) => (
+          <LazyImage key={index} imgFull={imgFull} imgSmall={imgSmall} />
         ))}
-      </div>
+      </Grid>
     </body>
   );
 }
