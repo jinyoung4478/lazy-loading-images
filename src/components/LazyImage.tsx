@@ -1,7 +1,7 @@
-import {useState} from 'react';
-import styled, {keyframes} from 'styled-components';
+import { useState } from "react";
+import styled, { keyframes } from "styled-components";
 
-const baseUrl = 'https://jinyoung4478.github.io/lazy-loading-images';
+const baseUrl = "https://jinyoung4478.github.io/lazy-loading-images";
 
 const pulse = keyframes`
   0% {
@@ -15,14 +15,13 @@ const pulse = keyframes`
   }
   `;
 
-const BlurLoad = styled.div<{imgPath: string}>`
-  background-image: url(${({imgPath}) => imgPath});
+const BlurLoad = styled.div`
   background-size: cover;
   background-position: center;
   position: relative;
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     animation: ${pulse} 2s infinite;
@@ -54,15 +53,17 @@ interface ILazyImage {
   imgSmall: string;
 }
 
-function LazyImage({imgFull, imgSmall}: ILazyImage) {
+function LazyImage({ imgFull, imgSmall }: ILazyImage) {
   const [loaded, setLoaded] = useState(false);
+
   function handleImageLoad() {
     setLoaded(true);
   }
+
   return (
     <BlurLoad
-      imgPath={imgSmall}
-      className={`blur-load ${loaded ? 'loaded' : ''}`}
+      className={`blur-load ${loaded && "loaded"}`}
+      style={{ backgroundImage: `url(${baseUrl}${imgSmall})` }}
     >
       <Img
         src={`${baseUrl}${imgFull}`}
