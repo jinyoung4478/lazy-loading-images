@@ -16,6 +16,12 @@ A repository that implements various image lazy loading techniques.
 
 - A lazy loading technique using pure React and CSS effects.
 
+## How to generate blurry placeholder images easily?
+
+```bash
+ffmpeg -i imageName.jpg -vf scale=20:-1 imageName-small.jpg
+```
+
 ## Folder Structure
 
 The project structure is organized as follows:
